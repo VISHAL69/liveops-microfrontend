@@ -1,8 +1,5 @@
 # LiveOps
 
-A frontend operations dashboard for monitoring products, inventory and orders —
-# LiveOps
-
 A frontend operations dashboard for monitoring products, inventory, and orders,
 built with Angular 22, Nx, Native Federation, PrimeNG, Signals, and RxJS.
 
