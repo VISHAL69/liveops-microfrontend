@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.app.json",
+  "files": [
+    "../../libs/shared/ui/src/index.ts",
+    "../../libs/inventory/ui/products/src/index.ts",
+    "../../libs/products/data-access/src/index.ts",
+    "../../libs/products/ui/src/index.ts",
+    "../../libs/orders/data-access/src/index.ts",
+    "../../libs/inventory/data-access/src/index.ts",
+    "../../libs/shared/utils/src/index.ts",
+    "../../libs/inventory/ui/product-details/src/index.ts",
+    "src/app/app.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}

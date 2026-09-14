@@ -1,0 +1,107 @@
+@if (loading()) {
+  <lib-loading-state [rowCount]="6" />
+} @else if (error()) {
+  <p-message severity="error">{{ error() }}</p-message>
+} @else {
+  <p-toolbar styleClass="inventory-toolbar">
+    <ng-template #start>
+      <span class="p-input-icon-left inventory-search">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          placeholder="Search by name or brand"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchInput($event)"
+        />
+      </span> 
+      <p-select
+        [options]="categories()"
+        [ngModel]="selectedCategory()"
+        (ngModelChange)="onCategoryChange($event)"
+        placeholder="All categories"
+        [showClear]="true"
+        styleClass="inventory-category-filter"
+      /> 
+      
+    </ng-template>
+    <ng-template #end>
+      <p-button
+        label="Clear filters"
+        icon="pi pi-filter-slash"
+        styleClass="p-button-outlined"
+        ariaLabel="Clear filters"
+        (onClick)="clearFilters()"
+      ></p-button>
+    </ng-template>
+  </p-toolbar>
+
+  @if (filteredProducts().length === 0) {
+    <lib-empty-state
+      title="No products match your filters"
+      description="Try a different search term or category."
+      icon="pi pi-search"
+    />
+  } @else {
+    <p-table
+      [value]="filteredProducts()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20, 50]"
+      [sortField]="'title'"
+      [sortOrder]="1"
+      responsiveLayout="scroll"
+      styleClass="inventory-table"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="title">Product <p-sort-icon field="title" /></th>
+          <th pSortableColumn="category">Category <p-sort-icon field="category" /></th>
+          <th pSortableColumn="price">Price <p-sort-icon field="price" /></th>
+          <th pSortableColumn="stock">Stock <p-sort-icon field="stock" /></th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-product>
+        <tr>
+          <td>
+            <div class="inventory-product">
+              <img [src]="product.thumbnail" [alt]="product.title" />
+              <span>{{ product.title }}</span>
+            </div>
+          </td>
+          <td>{{ product.category }}</td>
+          <td>{{ formatCurrency(product.price) }}</td>
+          <td>{{ product.stock }}</td>
+          
+          <td><lib-stock-status [stock]="product.stock" /></td>
+          <td>
+            <div class="inventory-actions">
+              <p-button
+                icon="pi pi-eye"
+                styleClass="p-button-text p-button-rounded"
+                ariaLabel="View product details"
+                (onClick)="viewDetails(product)"
+              ></p-button>
+              <p-button
+                label="Add to Order"
+                icon="pi pi-cart-plus"
+                styleClass="p-button-sm"
+                ariaLabel="Add to order"
+                [disabled]="product.stock === 0"
+                (onClick)="addToOrder(product)"
+              ></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+}
+
+<lib-inventory-product-details
+  [product]="selectedProduct()"
+  [visible]="detailsVisible()"
+  (visibleChange)="detailsVisible.set($event)"
+/>

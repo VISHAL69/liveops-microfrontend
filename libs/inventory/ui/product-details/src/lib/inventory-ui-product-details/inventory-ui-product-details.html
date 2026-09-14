@@ -1,0 +1,44 @@
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="onVisibleChange($event)"
+  [modal]="true"
+  [style]="{ width: '32rem' }"
+  [header]="product()?.title ?? 'Product details'"
+>
+  @if (product(); as p) {
+    <div class="product-details">
+      <img [src]="p.thumbnail" [alt]="p.title" class="product-details__image" />
+      <p class="product-details__description">{{ p.description }}</p>
+      <div class="product-details__grid">
+        <div>
+          <span class="product-details__label">Brand</span>
+          <span>{{ p.brand || 'N/A' }}</span>
+        </div>
+        <div>
+          <span class="product-details__label">SKU</span>
+          <span>{{ p.sku }}</span>
+        </div>
+        <div>
+          <span class="product-details__label">Price</span>
+          <span>{{ formatCurrency(discountedPrice(p)) }}
+            @if (p.discountPercentage > 0) {
+              <small class="product-details__strike">{{ formatCurrency(p.price) }}</small>
+            }
+          </span>
+        </div>
+        <div>
+          <span class="product-details__label">Stock</span>
+          <span><lib-stock-status [stock]="p.stock" /></span>
+        </div>
+        <div>
+          <span class="product-details__label">Warranty</span>
+          <span>{{ p.warrantyInformation }}</span>
+        </div>
+        <div>
+          <span class="product-details__label">Shipping</span>
+          <span>{{ p.shippingInformation }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</p-dialog>

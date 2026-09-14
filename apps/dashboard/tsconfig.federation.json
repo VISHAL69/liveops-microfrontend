@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.app.json",
+  "files": [
+    "../../libs/products/data-access/src/index.ts",
+    "../../libs/orders/data-access/src/index.ts",
+    "../../libs/shared/utils/src/index.ts",
+    "../../libs/shared/ui/src/index.ts",
+    "../../libs/products/ui/src/index.ts",
+    "src/app/app.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}

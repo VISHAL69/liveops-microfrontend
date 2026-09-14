@@ -1,0 +1,97 @@
+<lib-page-header
+  title="Operations Overview"
+  subtitle="Live snapshot of products, inventory and orders"
+/>
+
+@if (loading()) {
+  <lib-loading-state [rowCount]="5" />
+} @else if (error()) {
+  <p-message severity="error">{{ error() }}</p-message>
+} @else {
+  <div class="dashboard-grid">
+    <lib-kpi-card
+      label="Total Products"
+      [value]="formatNumber(totalProducts())"
+      icon="pi pi-box"
+    />
+    <lib-kpi-card
+      label="Low Stock"
+      [value]="formatNumber(lowStockCount())"
+      icon="pi pi-exclamation-triangle"
+      severity="warning"
+    />
+    <lib-kpi-card
+      label="Out of Stock"
+      [value]="formatNumber(outOfStockCount())"
+      icon="pi pi-times-circle"
+      severity="danger"
+    />
+    <lib-kpi-card
+      label="Total Orders"
+      [value]="formatNumber(totalOrders())"
+      icon="pi pi-shopping-cart"
+      severity="success"
+    />
+    <lib-kpi-card
+      label="Inventory Value"
+      [value]="inventoryValue()"
+      icon="pi pi-wallet"
+    />
+  </div>
+
+  <div class="dashboard-panels">
+    <p-card header="Products by Category" styleClass="dashboard-panel">
+      <div class="dashboard-chart">
+        <p-chart type="doughnut" [data]="categoryChartData()" [options]="chartOptions" />
+      </div>
+    </p-card>
+
+    <p-card header="Low Stock Alerts" styleClass="dashboard-panel">
+      @if (lowStockProducts().length === 0) {
+        <lib-empty-state
+          title="No low-stock items"
+          description="Every product is comfortably above the reorder threshold."
+          icon="pi pi-check-circle"
+        />
+      } @else {
+        <ul class="alert-list">
+          @for (product of lowStockProducts(); track product.id) {
+            <li class="alert-list__item">
+              <img [src]="product.thumbnail" [alt]="product.title" class="alert-list__thumb" />
+              <div class="alert-list__info">
+                <span class="alert-list__title">{{ product.title }}</span>
+                <span class="alert-list__meta">{{ product.stock }} left in stock</span>
+              </div>
+              <lib-stock-status [stock]="product.stock" />
+            </li>
+          }
+        </ul>
+      }
+    </p-card>
+  </div>
+
+  <p-card header="Recent Orders" styleClass="dashboard-panel">
+    @if (recentOrders().length === 0) {
+      <lib-empty-state title="No recent orders" icon="pi pi-shopping-cart" />
+    } @else {
+      <p-table [value]="recentOrders()" [rows]="6" responsiveLayout="scroll">
+        <ng-template #header>
+          <tr>
+            <th>Order ID</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Discounted Total</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-order>
+          <tr>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.totalProducts }} items ({{ order.totalQuantity }} units)</td>
+            <td>{{ formatCurrency(order.total) }}</td>
+            <td>{{ formatCurrency(order.discountedTotal) }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </p-card>
+}

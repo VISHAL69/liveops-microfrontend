@@ -1,0 +1,87 @@
+:host {
+  display: block;
+}
+
+lib-current-order {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.orders-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+}
+
+.orders-filter {
+  margin-bottom: 1rem;
+}
+
+.orders-status-filter {
+  min-width: 200px;
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__customer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 260px;
+    overflow-y: auto;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    img {
+      width: 2.25rem;
+      height: 2.25rem;
+      object-fit: cover;
+      border-radius: 0.4rem;
+      background: var(--p-surface-100, #f1f5f9);
+    }
+  }
+
+  &__item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 0.85rem;
+  }
+
+  &__item-meta {
+    color: var(--p-text-muted-color, #6b7280);
+    font-size: 0.75rem;
+  }
+
+  &__item-total {
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  &__summary {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    border-top: 1px solid var(--p-surface-200, #e5e7eb);
+    padding-top: 0.75rem;
+  }
+}

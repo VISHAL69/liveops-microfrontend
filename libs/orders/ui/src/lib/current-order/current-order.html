@@ -1,0 +1,40 @@
+<p-card header="Your Order" styleClass="current-order">
+  @if (ordersStore.items().length === 0) {
+    <lib-empty-state
+      title="Your order is empty"
+      description="Add products from Inventory to build an order."
+      icon="pi pi-shopping-cart"
+    />
+  } @else {
+    <ul class="current-order__list">
+      @for (item of ordersStore.items(); track item.product.id) {
+        <li class="current-order__item">
+          <img
+            [src]="item.product.thumbnail"
+            [alt]="item.product.title"
+            class="current-order__thumb"
+          />
+          <div class="current-order__info">
+            <span class="current-order__title">{{ item.product.title }}</span>
+            <span class="current-order__meta">
+              {{ formatCurrency(item.product.price) }} &times; {{ item.quantity }}
+            </span>
+          </div>
+          <span class="current-order__line-total">
+            {{ lineTotal(item.product.price, item.quantity) }}
+          </span>
+          <p-button
+            icon="pi pi-times"
+            styleClass="p-button-text p-button-rounded p-button-sm"
+            ariaLabel="Remove from order"
+            (onClick)="ordersStore.removeProduct(item.product.id)"
+          ></p-button>
+        </li>
+      }
+    </ul>
+    <div class="current-order__summary">
+      <span>Total ({{ ordersStore.itemCount() }} items)</span>
+      <span>{{ formatCurrency(ordersStore.total()) }}</span>
+    </div>
+  }
+</p-card>

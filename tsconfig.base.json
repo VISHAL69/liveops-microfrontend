@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": false,
+    "paths": {
+      "@liveops/products-data-access": ["./libs/products/data-access/src/index.ts"],
+      "@liveops/products-ui": ["./libs/products/ui/src/index.ts"],
+      "@liveops/inventory-data-access": ["./libs/inventory/data-access/src/index.ts"],
+      "@liveops/inventory-ui-products": ["./libs/inventory/ui/products/src/index.ts"],
+      "@liveops/inventory-ui-product-details": ["./libs/inventory/ui/product-details/src/index.ts"],
+      "@liveops/orders-data-access": ["./libs/orders/data-access/src/index.ts"],
+      "@liveops/orders-ui": ["./libs/orders/ui/src/index.ts"],
+      "@liveops/ui": ["./libs/shared/ui/src/index.ts"],
+      "@liveops/utils": ["./libs/shared/utils/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

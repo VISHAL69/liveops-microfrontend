@@ -1,0 +1,45 @@
+<div class="shell" [class.shell--collapsed]="sidebarCollapsed()">
+  <aside class="shell__sidebar">
+    <div class="shell__brand">
+      <i class="pi pi-bolt"></i>
+      @if (!sidebarCollapsed()) {
+        <span>{{ appTitle }}</span>
+      }
+    </div>
+
+    <nav class="shell__nav">
+      @for (item of navItems; track item.path) {
+        <a
+          class="shell__nav-item"
+          [class.shell__nav-item--active]="isActive(item.path)"
+          [routerLink]="item.path"
+        >
+          <i [class]="item.icon"></i>
+          @if (!sidebarCollapsed()) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <div class="shell__main">
+    <header class="shell__topbar">
+      <p-button
+        icon="pi pi-bars"
+        ariaLabel="Toggle navigation"
+        styleClass="p-button-text p-button-rounded"
+        (onClick)="toggleSidebar()"
+      ></p-button>
+      <h2 class="shell__page-title">{{ pageTitle() }}</h2>
+      <div class="shell__topbar-spacer"></div>
+      <span class="shell__env-tag">Ops Dashboard</span>
+    </header>
+
+    <main class="shell__content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+<p-toast />

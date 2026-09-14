@@ -1,0 +1,106 @@
+<lib-page-header
+  title="Orders"
+  subtitle="Products added from Inventory, plus historical order data"
+/>
+
+<lib-current-order />
+
+<h3 class="orders-section-title">Order History</h3>
+
+@if (loading()) {
+  <lib-loading-state [rowCount]="6" />
+} @else if (error()) {
+  <p-message severity="error">{{ error() }}</p-message>
+} @else {
+  <div class="orders-filter">
+    <p-select
+      [options]="statusOptions"
+      optionLabel="label"
+      optionValue="value"
+      [ngModel]="statusFilter()"
+      (ngModelChange)="onStatusFilterChange($event)"
+      placeholder="All statuses"
+      [showClear]="true"
+      styleClass="orders-status-filter"
+    />
+  </div>
+
+  @if (filteredOrders().length === 0) {
+    <lib-empty-state title="No orders match this filter" icon="pi pi-shopping-cart" />
+  } @else {
+    <p-table
+      [value]="filteredOrders()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20, 50]"
+      responsiveLayout="scroll"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th># Products</th>
+          <th>Total</th>
+          <th>Discount</th>
+          <th>Total After Discount</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-order>
+        <tr>
+          <td>#{{ order.id }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>{{ order.totalProducts }}</td>
+          <td>{{ formatCurrency(order.total) }}</td>
+          <td>{{ formatCurrency(order.total - order.discountedTotal) }}</td>
+          <td>{{ formatCurrency(order.discountedTotal) }}</td>
+          <td><p-tag [value]="order.status" [severity]="severityFor(order.status)" /></td>
+          <td>
+            <p-button
+              icon="pi pi-eye"
+              ariaLabel="View order details"
+              styleClass="p-button-text p-button-rounded"
+              (onClick)="viewDetails(order)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+}
+
+<p-dialog
+  [visible]="detailsVisible()"
+  (visibleChange)="detailsVisible.set($event)"
+  [modal]="true"
+  [style]="{ width: '34rem' }"
+  [header]="'Order #' + (selectedOrder()?.id ?? '')"
+>
+  @if (selectedOrder(); as order) {
+    <div class="order-details">
+      <p class="order-details__customer">
+        <i class="pi pi-user"></i> {{ order.customerName }}
+        <p-tag [value]="order.status" [severity]="severityFor(order.status)" />
+      </p>
+      <ul class="order-details__items">
+        @for (product of order.products; track product.id) {
+          <li>
+            <img [src]="product.thumbnail" [alt]="product.title" />
+            <div class="order-details__item-info">
+              <span>{{ product.title }}</span>
+              <span class="order-details__item-meta">
+                {{ product.quantity }} &times; {{ formatCurrency(product.price) }}
+              </span>
+            </div>
+            <span class="order-details__item-total">{{ formatCurrency(product.discountedTotal) }}</span>
+          </li>
+        }
+      </ul>
+      <div class="order-details__summary">
+        <span>Total</span>
+        <span>{{ formatCurrency(order.discountedTotal) }}</span>
+      </div>
+    </div>
+  }
+</p-dialog>
