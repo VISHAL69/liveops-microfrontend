@@ -1,15 +1,13 @@
 # LiveOps
 
 A frontend operations dashboard for monitoring products, inventory and orders —
-built as an Angular 22 + Nx monorepo using a real Micro Frontend architecture,
-PrimeNG, Signals and RxJS, against the [DummyJSON](https://dummyjson.com) REST API.
+# LiveOps
 
-This was built as a time-limited Senior/Lead Frontend interview assignment and
-later evolved to domain-based libraries plus a cross-MFE "Add to Order" flow.
-Where the original brief's tooling has since been deprecated/superseded, or
-where a third-party library's API changed in ways only discovered through
-real testing, this project uses the current correct approach and documents
-the deviation below (see §12 and §13) rather than silently working around it.
+A frontend operations dashboard for monitoring products, inventory, and orders,
+built with Angular 22, Nx, Native Federation, PrimeNG, Signals, and RxJS.
+
+LiveOps demonstrates a domain-based Micro Frontend architecture with independent
+Dashboard, Inventory, and Orders applications sharing a common Shell.
 
 ---
 
